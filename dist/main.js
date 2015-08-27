@@ -25,7 +25,7 @@
         cells.getTop().toBeReset = false;
       }
     }
-    return game.time.events.loop(Phaser.Timer.SECOND, updateCells, this);
+    return game.time.events.loop(Phaser.Timer.HALF, updateCells, this);
   };
 
   updateCells = function() {

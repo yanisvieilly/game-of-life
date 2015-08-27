@@ -20,7 +20,7 @@ create = ->
       cells.getTop().toBeKilled = false
       cells.getTop().toBeReset = false
 
-  game.time.events.loop Phaser.Timer.SECOND, updateCells, @
+  game.time.events.loop Phaser.Timer.HALF, updateCells, @
 
 updateCells = ->
   cells.forEach (cell) ->
