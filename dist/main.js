@@ -1,5 +1,5 @@
 (function() {
-  var CELL_COLUMNS, CELL_ROWS, HEIGHT, WIDTH, cells, create, game, preload, updateCells,
+  var CELL_COLUMNS, CELL_ROWS, HEIGHT, WIDTH, cells, create, game, updateCells,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   WIDTH = 800;
@@ -12,17 +12,15 @@
 
   cells = null;
 
-  preload = function() {
-    return game.load.image('cell', 'dist/assets/cell.jpg');
-  };
-
   create = function() {
-    var i, j, ref, ref1, x, y;
+    var cellBitmap, i, j, ref, ref1, x, y;
     game.stage.backgroundColor = 0xFFFFFF;
+    cellBitmap = game.add.bitmapData(10, 10);
+    cellBitmap.fill(0x00, 0x00, 0x00);
     cells = game.add.group();
     for (y = i = 0, ref = CELL_ROWS; 0 <= ref ? i < ref : i > ref; y = 0 <= ref ? ++i : --i) {
       for (x = j = 0, ref1 = CELL_COLUMNS; 0 <= ref1 ? j < ref1 : j > ref1; x = 0 <= ref1 ? ++j : --j) {
-        cells.create(x * 10, y * 10, 'cell', 0, game.rnd.between(0, 20) === 0);
+        cells.create(x * 10, y * 10, cellBitmap, 0, game.rnd.between(0, 20) === 0);
         cells.getTop().toBeKilled = false;
         cells.getTop().toBeReset = false;
       }
@@ -63,7 +61,6 @@
   };
 
   game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
-    preload: preload,
     create: create
   });
 

@@ -6,17 +6,17 @@ CELL_ROWS = HEIGHT / 10
 
 cells = null
 
-preload = ->
-  game.load.image 'cell', 'dist/assets/cell.jpg'
-
 create = ->
   game.stage.backgroundColor = 0xFFFFFF
+
+  cellBitmap = game.add.bitmapData 10, 10
+  cellBitmap.fill 0x00, 0x00, 0x00
 
   cells = game.add.group()
 
   for y in [0...CELL_ROWS]
     for x in [0...CELL_COLUMNS]
-      cells.create x * 10, y * 10, 'cell', 0, game.rnd.between(0, 20) is 0
+      cells.create x * 10, y * 10, cellBitmap, 0, game.rnd.between(0, 20) is 0
       cells.getTop().toBeKilled = false
       cells.getTop().toBeReset = false
 
@@ -50,5 +50,4 @@ updateCells = ->
       cell.toBeReset = false
 
 game = new Phaser.Game 800, 600, Phaser.AUTO, '',
-  preload: preload
   create: create
