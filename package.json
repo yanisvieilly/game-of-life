@@ -1,0 +1,12 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
+  "author": "Yanis Vieilly"
+}
