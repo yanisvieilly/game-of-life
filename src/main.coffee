@@ -1,3 +1,11 @@
+WIDTH = 800
+HEIGHT = 600
+
+CELL_COLUMNS = WIDTH / 10
+CELL_ROWS = HEIGHT / 10
+
+cells = null
+
 preload = ->
   game.load.image 'cell', 'dist/assets/cell.jpg'
 
