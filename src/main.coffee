@@ -1,5 +1,5 @@
 preload = ->
-  game.load.image 'alive', 'dist/assets/alive.jpg'
+  game.load.image 'cell', 'dist/assets/cell.jpg'
 
 create = ->
   game.stage.backgroundColor = 0xFFFFFF
