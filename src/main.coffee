@@ -1,11 +1,9 @@
 preload = ->
+  game.load.image 'alive', 'dist/assets/alive.jpg'
+  game.load.image 'dead', 'dist/assets/dead.jpg'
 
 create = ->
-  graphics = game.add.graphics 0, 0
-
-  graphics.beginFill 0xFFFFFF
-  graphics.drawRect 0, 0, 10, 10
-  graphics.endFill()
+  game.add.sprite 0, 0, 'dead'
 
 update = ->
 
