@@ -49,12 +49,6 @@ updateCells = ->
       cell.reset(cell.x, cell.y)
       cell.toBeReset = false
 
-update = ->
-
-render = ->
-
 game = new Phaser.Game 800, 600, Phaser.AUTO, '',
   preload: preload
   create: create
-  update: update
-  render: render
