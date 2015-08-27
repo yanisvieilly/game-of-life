@@ -20,7 +20,9 @@ create = ->
       cells.getTop().toBeKilled = false
       cells.getTop().toBeReset = false
 
-update = ->
+  game.time.events.loop Phaser.Timer.SECOND, updateCells, @
+
+updateCells = ->
   cells.forEach (cell) ->
     aliveNeighbors = 0
     aliveNeighbors++ for cellPosition in [
@@ -46,6 +48,8 @@ update = ->
     else if cell.toBeReset
       cell.reset(cell.x, cell.y)
       cell.toBeReset = false
+
+update = ->
 
 render = ->
 
