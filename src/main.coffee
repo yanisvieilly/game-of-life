@@ -11,9 +11,19 @@ preload = ->
 
 create = ->
   game.stage.backgroundColor = 0xFFFFFF
-  game.add.sprite 0, 0, 'alive'
+
+  cells = game.add.group()
+
+  for y in [0...CELL_ROWS]
+    for x in [0...CELL_COLUMNS]
+      cells.create x * 10, y * 10, 'cell', 0, game.rnd.between(0, 100) is 0
 
 update = ->
+  cells.forEach (cell) ->
+    if cell.alive
+      ;
+    else
+      ;
 
 render = ->
 
