@@ -20,10 +20,22 @@ create = ->
 
 update = ->
   cells.forEach (cell) ->
+    aliveNeighbors = 0
+    aliveNeighbors++ for cellPosition in [
+      cell.z - CELL_COLUMNS - 1,
+      cell.z - CELL_COLUMNS,
+      cell.z - CELL_COLUMNS + 1,
+      cell.z - 1,
+      cell.z + 1,
+      cell.z + CELL_COLUMNS - 1,
+      cell.z + CELL_COLUMNS,
+      cell.z + CELL_COLUMNS + 1
+    ] when cells.getAt(cellPosition)?.alive
+
     if cell.alive
-      ;
+      cell.kill() if aliveNeighbors not in [2..3]
     else
-      ;
+      cell.revive() if aliveNeighbors is 3
 
 render = ->
 
