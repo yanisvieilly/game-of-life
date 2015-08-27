@@ -1,9 +1,9 @@
 preload = ->
   game.load.image 'alive', 'dist/assets/alive.jpg'
-  game.load.image 'dead', 'dist/assets/dead.jpg'
 
 create = ->
-  game.add.sprite 0, 0, 'dead'
+  game.stage.backgroundColor = 0xFFFFFF
+  game.add.sprite 0, 0, 'alive'
 
 update = ->
 
