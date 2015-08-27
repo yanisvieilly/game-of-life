@@ -32,7 +32,7 @@ update = ->
       cell.z + CELL_COLUMNS - 1,
       cell.z + CELL_COLUMNS,
       cell.z + CELL_COLUMNS + 1
-    ] when cells.getAt(cellPosition)?.alive
+    ] when cells.getAt(cellPosition - 1)?.alive
 
     if cell.alive
       cell.toBeKilled = true if aliveNeighbors not in [2..3]
