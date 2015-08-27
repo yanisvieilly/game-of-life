@@ -16,7 +16,9 @@ create = ->
 
   for y in [0...CELL_ROWS]
     for x in [0...CELL_COLUMNS]
-      cells.create x * 10, y * 10, 'cell', 0, game.rnd.between(0, 100) is 0
+      cells.create x * 10, y * 10, 'cell', 0, game.rnd.between(0, 20) is 0
+      cells.getTop().toBeKilled = false
+      cells.getTop().toBeReset = false
 
 update = ->
   cells.forEach (cell) ->
@@ -33,9 +35,17 @@ update = ->
     ] when cells.getAt(cellPosition)?.alive
 
     if cell.alive
-      cell.kill() if aliveNeighbors not in [2..3]
+      cell.toBeKilled = true if aliveNeighbors not in [2..3]
     else
-      cell.revive() if aliveNeighbors is 3
+      cell.toBeReset = true if aliveNeighbors is 3
+
+  cells.forEach (cell) ->
+    if cell.toBeKilled
+      cell.kill()
+      cell.toBeKilled = false
+    else if cell.toBeReset
+      cell.reset(cell.x, cell.y)
+      cell.toBeReset = false
 
 render = ->
 
