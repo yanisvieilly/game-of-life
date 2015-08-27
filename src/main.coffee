@@ -16,7 +16,12 @@ create = ->
 
   for y in [0...CELL_ROWS]
     for x in [0...CELL_COLUMNS]
+      # Randomized
       cells.create x * 10, y * 10, cellBitmap, 0, game.rnd.between(0, 20) is 0
+      # Glider spaceship starting on the top left corner
+      # cells.create x * 10, y * 10, cellBitmap, 0,
+      #   (y == 0 && x == 2) || (y == 1 && x == 0) || (y == 1 && x == 2) ||
+      #   (y == 2 && x == 1) || (y == 2 && x == 2)
       cells.getTop().toBeKilled = false
       cells.getTop().toBeReset = false
 
