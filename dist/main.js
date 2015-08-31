@@ -1,5 +1,5 @@
 (function() {
-  var CELL_COLUMNS, CELL_ROWS, HEIGHT, WIDTH, cells, create, game, updateCells,
+  var CELL_COLUMNS, CELL_ROWS, HEIGHT, WIDTH, cells, create, game, neighboringPositions, updateCells,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   WIDTH = 800;
@@ -28,15 +28,21 @@
     return game.time.events.loop(Phaser.Timer.HALF, updateCells, this);
   };
 
+  neighboringPositions = function(cellIndex) {
+    return [cellIndex - CELL_COLUMNS - 1, cellIndex - CELL_COLUMNS, cellIndex - CELL_COLUMNS + 1, cellIndex - 1, cellIndex + 1, cellIndex + CELL_COLUMNS - 1, cellIndex + CELL_COLUMNS, cellIndex + CELL_COLUMNS + 1];
+  };
+
   updateCells = function() {
     cells.forEach(function(cell) {
-      var aliveNeighbors, cellPosition, i, len, ref, ref1;
+      var aliveNeighbors, i, len, neighborPosition, neighborPositions, ref;
       aliveNeighbors = 0;
-      ref = [cell.z - CELL_COLUMNS - 1, cell.z - CELL_COLUMNS, cell.z - CELL_COLUMNS + 1, cell.z - 1, cell.z + 1, cell.z + CELL_COLUMNS - 1, cell.z + CELL_COLUMNS, cell.z + CELL_COLUMNS + 1];
-      for (i = 0, len = ref.length; i < len; i++) {
-        cellPosition = ref[i];
-        if ((ref1 = cells.getAt(cellPosition - 1)) != null ? ref1.alive : void 0) {
-          aliveNeighbors++;
+      neighborPositions = neighboringPositions(cell.z);
+      for (i = 0, len = neighborPositions.length; i < len; i++) {
+        neighborPosition = neighborPositions[i];
+        if ((ref = cells.getAt(neighborPosition - 1)) != null ? ref.alive : void 0) {
+          if (++aliveNeighbors === 4) {
+            break;
+          }
         }
       }
       if (cell.alive) {

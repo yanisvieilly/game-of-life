@@ -27,19 +27,24 @@ create = ->
 
   game.time.events.loop Phaser.Timer.HALF, updateCells, @
 
+neighboringPositions = (cellIndex) ->
+  [
+    cellIndex - CELL_COLUMNS - 1,
+    cellIndex - CELL_COLUMNS,
+    cellIndex - CELL_COLUMNS + 1,
+    cellIndex - 1,
+    cellIndex + 1,
+    cellIndex + CELL_COLUMNS - 1,
+    cellIndex + CELL_COLUMNS,
+    cellIndex + CELL_COLUMNS + 1
+  ]
+
 updateCells = ->
   cells.forEach (cell) ->
     aliveNeighbors = 0
-    aliveNeighbors++ for cellPosition in [
-      cell.z - CELL_COLUMNS - 1,
-      cell.z - CELL_COLUMNS,
-      cell.z - CELL_COLUMNS + 1,
-      cell.z - 1,
-      cell.z + 1,
-      cell.z + CELL_COLUMNS - 1,
-      cell.z + CELL_COLUMNS,
-      cell.z + CELL_COLUMNS + 1
-    ] when cells.getAt(cellPosition - 1)?.alive
+    neighborPositions = neighboringPositions cell.z
+    for neighborPosition in neighborPositions when cells.getAt(neighborPosition - 1)?.alive
+      break if ++aliveNeighbors is 4
 
     if cell.alive
       cell.toBeKilled = true if aliveNeighbors not in [2..3]
