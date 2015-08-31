@@ -6,9 +6,7 @@ CELL_ROWS = HEIGHT / 10
 
 cells = null
 
-create = ->
-  game.stage.backgroundColor = 0xFFFFFF
-
+createCells = ->
   cellBitmap = game.add.bitmapData 10, 10
   cellBitmap.fill 0x00, 0x00, 0x00
 
@@ -22,12 +20,15 @@ create = ->
       # cells.create x * 10, y * 10, cellBitmap, 0,
       #   (y == 0 && x == 2) || (y == 1 && x == 0) || (y == 1 && x == 2) ||
       #   (y == 2 && x == 1) || (y == 2 && x == 2)
-      cells.getTop().toBeKilled = false
-      cells.getTop().toBeReset = false
+
+create = ->
+  game.stage.backgroundColor = 0xFFFFFF
+
+  createCells()
 
   game.time.events.loop Phaser.Timer.HALF, updateCells, @
 
-neighboringPositions = (cellIndex) ->
+getNeighborPositions = (cellIndex) ->
   [
     cellIndex - CELL_COLUMNS - 1,
     cellIndex - CELL_COLUMNS,
@@ -39,23 +40,30 @@ neighboringPositions = (cellIndex) ->
     cellIndex + CELL_COLUMNS + 1
   ]
 
+getAliveNeighbors = (cell) ->
+  quantity = 0
+  neighborPositions = getNeighborPositions cell.z
+  for neighborPosition in neighborPositions when cells.getAt(neighborPosition - 1)?.alive
+    break if ++quantity is 4
+  quantity
+
+killOrResetCells = (toBeKilled, toBeReset) ->
+  cell.kill() for cell in toBeKilled
+  cell.reset(cell.x, cell.y) for cell in toBeReset
+
 updateCells = ->
   toBeKilled = []
   toBeReset = []
 
   for cell in cells.children
-    aliveNeighbors = 0
-    neighborPositions = neighboringPositions cell.z
-    for neighborPosition in neighborPositions when cells.getAt(neighborPosition - 1)?.alive
-      break if ++aliveNeighbors is 4
+    aliveNeighbors = getAliveNeighbors cell
 
     if cell.alive
       toBeKilled.push cell if aliveNeighbors not in [2..3]
     else
       toBeReset.push cell if aliveNeighbors is 3
 
-  cell.kill() for cell in toBeKilled
-  cell.reset(cell.x, cell.y) for cell in toBeReset
+  killOrResetCells toBeKilled, toBeReset
 
 game = new Phaser.Game 800, 600, Phaser.AUTO, '',
   create: create
