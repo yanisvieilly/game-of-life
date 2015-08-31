@@ -33,16 +33,17 @@
   };
 
   updateCells = function() {
-    var toBeKilled, toBeReset;
+    var aliveNeighbors, cell, i, j, k, l, len, len1, len2, len3, neighborPosition, neighborPositions, ref, ref1, results, toBeKilled, toBeReset;
     toBeKilled = [];
     toBeReset = [];
-    cells.forEach(function(cell) {
-      var aliveNeighbors, i, len, neighborPosition, neighborPositions, ref;
+    ref = cells.children;
+    for (i = 0, len = ref.length; i < len; i++) {
+      cell = ref[i];
       aliveNeighbors = 0;
       neighborPositions = neighboringPositions(cell.z);
-      for (i = 0, len = neighborPositions.length; i < len; i++) {
-        neighborPosition = neighborPositions[i];
-        if ((ref = cells.getAt(neighborPosition - 1)) != null ? ref.alive : void 0) {
+      for (j = 0, len1 = neighborPositions.length; j < len1; j++) {
+        neighborPosition = neighborPositions[j];
+        if ((ref1 = cells.getAt(neighborPosition - 1)) != null ? ref1.alive : void 0) {
           if (++aliveNeighbors === 4) {
             break;
           }
@@ -50,20 +51,24 @@
       }
       if (cell.alive) {
         if (indexOf.call([2, 3], aliveNeighbors) < 0) {
-          return toBeKilled.push(cell);
+          toBeKilled.push(cell);
         }
       } else {
         if (aliveNeighbors === 3) {
-          return toBeReset.push(cell);
+          toBeReset.push(cell);
         }
       }
-    });
-    toBeKilled.forEach(function(cell) {
-      return cell.kill();
-    });
-    return toBeReset.forEach(function(cell) {
-      return cell.reset(cell.x, cell.y);
-    });
+    }
+    for (k = 0, len2 = toBeKilled.length; k < len2; k++) {
+      cell = toBeKilled[k];
+      cell.kill();
+    }
+    results = [];
+    for (l = 0, len3 = toBeReset.length; l < len3; l++) {
+      cell = toBeReset[l];
+      results.push(cell.reset(cell.x, cell.y));
+    }
+    return results;
   };
 
   game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
