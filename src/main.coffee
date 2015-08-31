@@ -40,6 +40,9 @@ neighboringPositions = (cellIndex) ->
   ]
 
 updateCells = ->
+  toBeKilled = []
+  toBeReset = []
+
   cells.forEach (cell) ->
     aliveNeighbors = 0
     neighborPositions = neighboringPositions cell.z
@@ -47,17 +50,12 @@ updateCells = ->
       break if ++aliveNeighbors is 4
 
     if cell.alive
-      cell.toBeKilled = true if aliveNeighbors not in [2..3]
+      toBeKilled.push cell if aliveNeighbors not in [2..3]
     else
-      cell.toBeReset = true if aliveNeighbors is 3
+      toBeReset.push cell if aliveNeighbors is 3
 
-  cells.forEach (cell) ->
-    if cell.toBeKilled
-      cell.kill()
-      cell.toBeKilled = false
-    else if cell.toBeReset
-      cell.reset(cell.x, cell.y)
-      cell.toBeReset = false
+  toBeKilled.forEach (cell) -> cell.kill()
+  toBeReset.forEach (cell) -> cell.reset(cell.x, cell.y)
 
 game = new Phaser.Game 800, 600, Phaser.AUTO, '',
   create: create

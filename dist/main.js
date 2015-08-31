@@ -33,6 +33,9 @@
   };
 
   updateCells = function() {
+    var toBeKilled, toBeReset;
+    toBeKilled = [];
+    toBeReset = [];
     cells.forEach(function(cell) {
       var aliveNeighbors, i, len, neighborPosition, neighborPositions, ref;
       aliveNeighbors = 0;
@@ -47,22 +50,19 @@
       }
       if (cell.alive) {
         if (indexOf.call([2, 3], aliveNeighbors) < 0) {
-          return cell.toBeKilled = true;
+          return toBeKilled.push(cell);
         }
       } else {
         if (aliveNeighbors === 3) {
-          return cell.toBeReset = true;
+          return toBeReset.push(cell);
         }
       }
     });
-    return cells.forEach(function(cell) {
-      if (cell.toBeKilled) {
-        cell.kill();
-        return cell.toBeKilled = false;
-      } else if (cell.toBeReset) {
-        cell.reset(cell.x, cell.y);
-        return cell.toBeReset = false;
-      }
+    toBeKilled.forEach(function(cell) {
+      return cell.kill();
+    });
+    return toBeReset.forEach(function(cell) {
+      return cell.reset(cell.x, cell.y);
     });
   };
 
